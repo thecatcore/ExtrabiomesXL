@@ -1,0 +1,266 @@
+plugins {
+    id 'java'
+    id 'xyz.wagyourtail.unimined' version '1.4.2-SNAPSHOT'
+}
+
+group 'extrabiomes'
+version project.mod_version
+
+base {
+    archivesName = 'ExtraBiomesXL'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+    sourceCompatibility = JavaVersion.VERSION_1_6
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 6
+}
+
+sourceSets {
+    client {
+        java {
+            srcDirs("src/common/java", "src/client/java")
+        }
+        resources {
+            srcDirs("src/common/resources", "src/client/resources")
+        }
+    }
+    server {
+        java {
+            srcDirs("src/common/java", "src/server/java")
+        }
+        resources {
+            srcDirs("src/common/resources", "src/server/resources")
+        }
+    }
+}
+
+repositories {
+    unimined.minecraftForgeMaven()
+    unimined.wagYourMaven("releases")
+    mavenCentral()
+    mavenLocal()
+}
+
+def relocatedClasses = [
+        // ModLoader
+        "ModLoader",
+        "BaseMod",
+        "EntityRendererProxy",
+        "ModTextureAnimation",
+        "ModTextureStatic",
+        // Forge
+        "ClientRegistry",
+        "FMLRenderAccessLibrary",
+        "MLProp",
+        "mod_MinecraftForge",
+        "SidedProxy",
+        "ServerRegistry",
+
+        // ExtraBiomesXL
+        "mod_ExtrabiomesXL"
+]
+
+def forgeClasses = [
+        "ArmorProperties",
+        "Configuration",
+        "DimensionManager",
+        "DungeonLoot",
+        "EntityTrackerInfo",
+        "EnumHelper",
+        "EnumHelperClient",
+        "ForgeHooks",
+        "ForgeHooksClient",
+        "GuiControlsScrollPanel",
+        "GuiMissingMods",
+        "IArmorTextureProvider",
+        "IArrowLooseHandler",
+        "IArrowNockHandler",
+        "IBonemealHandler",
+        "IBucketHandler",
+        "IChatHandler",
+        "IChunkLoadHandler",
+        "IConnectionHandler",
+        "IConnectRedstone",
+        "ICraftingHandler",
+        "IDestroyToolHandler",
+        "IEntityInteractHandler",
+        "IGuiHandler",
+        "IHighlightHandler",
+        "IHoeHandler",
+        "IItemRenderer",
+        "IMinecartCollisionHandler",
+        "IMinecartHandler",
+        "IMultipassRender",
+        "IOreHandler",
+        "IOverrideReplace",
+        "IPacketHandler",
+        "IPickupHandler",
+        "IRenderContextHandler",
+        "IRenderWorldLastHandler",
+        "IShearable",
+        "ISidedInventory",
+        "ISleepHandler",
+        "ISpawnHandler",
+        "ISpecialArmor",
+        "ISpecialResistance",
+        "ItemRenderType",
+        "ITextureProvider",
+        "IThrowableEntity",
+        "MessageManager",
+        "MinecartKey",
+        "MinecraftForge",
+        "MinecraftForgeClient",
+        "NetworkMod",
+        "ObjectPair",
+        "PacketHandlerClient",
+        "Property",
+        "AchievementPage",
+        "IEntityLivingHandler",
+        "IFuelHandler",
+        "ISaveEventHandler",
+        "ISoundHandler",
+        "ISpecialMobSpawnHandler",
+        "ITextureLoadHandler",
+        "ModCompatibilityClient",
+        "ForgeHooksServer",
+        "PacketHandlerServer",
+        "packets/ForgePacket",
+        "packets/PacketEntitySpawn",
+        "packets/PacketMissingMods",
+        "packets/PacketModList",
+        "packets/PacketOpenGUI",
+        "packets/PacketEntityTrack",
+        "packets/PacketHandlerBase",
+        "adaptors/EntityLivingHandlerAdaptor",
+        "adaptors/SoundHandlerAdaptor",
+        "oredict/OreDictionary",
+        "oredict/ShapedOreRecipe",
+        "oredict/ShapelessOreRecipe"
+]
+
+unimined.minecraft(sourceSets.client) {
+    version project.minecraft_version
+    side("client")
+
+    mappings {
+        mcp("legacy", "${project.mcp_version}-${project.minecraft_version}")
+
+        stubs(["official", "searge"]) {
+            for (String clazzName : relocatedClasses) {
+                c(clazzName, "net/minecraft/src/${clazzName}")
+            }
+            for (String clazzName : forgeClasses) {
+                c("forge/${clazzName}", "net/minecraft/src/forge/${clazzName}")
+            }
+        }
+
+        stubs(["searge", "mcp"]) {
+            c(["net/minecraft/src/BiomeGenBase", "net/minecraft/src/BiomeGenBase"]) {
+                m("func_50086_b;()Lnet/minecraft/src/BiomeGenBase;", "setEnableSnow;()Lnet/minecraft/src/BiomeGenBase;")
+                m("func_48410_b;(Ljava/util/Random;)Lnet/minecraft/src/WorldGenerator;", "getRandomWorldGenForGrass;(Ljava/util/Random;)Lnet/minecraft/src/WorldGenerator;")
+            }
+        }
+    }
+
+    minecraftForge {
+        loader project.forge_version
+    }
+
+    minecraftRemapper.config {
+        ignoreConflicts(true)
+    }
+
+    runs {
+        config("client") {
+            jvmArgs("-Djma.debug=true")
+        }
+    }
+}
+
+unimined.minecraft(sourceSets.server) {
+    version project.minecraft_version
+    side("server")
+
+    mappings {
+        mcp("legacy", "${project.mcp_version}-${project.minecraft_version}")
+
+        stubs(["official", "searge"]) {
+            for (String clazzName : relocatedClasses) {
+                c(clazzName, "net/minecraft/src/${clazzName}")
+            }
+            for (String clazzName : forgeClasses) {
+                c("forge/${clazzName}", "net/minecraft/src/forge/${clazzName}")
+            }
+        }
+
+        stubs(["searge", "mcp"]) {
+            c(["net/minecraft/src/BiomeGenBase", "net/minecraft/src/BiomeGenBase"]) {
+                m("func_50024_b;()Lnet/minecraft/src/BiomeGenBase;", "setEnableSnow;()Lnet/minecraft/src/BiomeGenBase;")
+                m("func_48440_b;(Ljava/util/Random;)Lnet/minecraft/src/WorldGenerator;", "getRandomWorldGenForGrass;(Ljava/util/Random;)Lnet/minecraft/src/WorldGenerator;")
+            }
+        }
+    }
+
+    minecraftForge {
+        loader project.forge_version
+    }
+
+    minecraftRemapper.config {
+        ignoreConflicts(true)
+    }
+
+    runs {
+        config("server") {
+            jvmArgs("-Djma.debug=true")
+        }
+    }
+}
+
+dependencies {
+
+}
+
+
+processClientResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    inputs.property "version", project.version
+
+    filesMatching("mcmod.info") {
+        expand "version": project.version
+    }
+}
+
+processServerResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    inputs.property "version", project.version
+
+    filesMatching("mcmod.info") {
+        expand "version": project.version
+    }
+}
+
+clientJar {
+    from("MMPL-1.0.txt")
+    from("Change Log.txt")
+    from("Credits.txt")
+    from("Donors.txt")
+}
+
+serverJar {
+    from("MMPL-1.0.txt")
+    from("Change Log.txt")
+    from("Credits.txt")
+    from("Donors.txt")
+}
+
+jar {
+    enabled = false
+}

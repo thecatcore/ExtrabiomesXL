@@ -1,3 +1,4 @@
-
-/*
-!/extrabiomes
+/.gradle/
+/.idea/
+/build/
+/run/
