@@ -1,6 +1,7 @@
-/*
-!/eclipse
-!/extrabiomes
+/.gradle/
+/.idea/
+/build/
+/run/
 
 eclipse/.DS_Store
 
