@@ -18,7 +18,7 @@ Windows (Tested on Windows 7, may be different for other versions):
 
 3: Secondary-click "minecraft.jar" and select open with, WinRAR
 
-4: Drag everything inside "jar Files" into minecraft.jar.
+4: Drag everything inside this folder into minecraft.jar.
 
 5: !!!DELETE META-INF!!!
 
@@ -39,7 +39,7 @@ mkdir mctmp
 cd mctmp
 jar xf ~/Library/Application\ Support/minecraft/bin/minecraft.jar
 
-2: Navigate to "mctmp" in your home directory, and drag in everything inside "jar Files" Allow it to replace all files.
+2: Navigate to "mctmp" in your home directory, and drag in everything inside this folder Allow it to replace all files.
 
 3: After you're finished copying, go back to Terminal.app, and copy/paste the following text:
 
@@ -62,7 +62,7 @@ Linux (Debain and debian derivatives such as Ubuntu, Linux Mint, ElementaryOS, e
 
 2: Still in the home directory, navigate to .minecraft/bin. Secondary click "minecraft.jar" and select "Open With Archive Manager"
 
-3: Drag everything inside "jar Files" into minecraft.jar.
+3: Drag everything inside this folder into minecraft.jar.
 
 4: !!!DELETE META-INF!!!
 

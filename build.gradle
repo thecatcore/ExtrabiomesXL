@@ -1,0 +1,163 @@
+plugins {
+    id 'java'
+    id 'xyz.wagyourtail.unimined' version '1.4.2-SNAPSHOT'
+}
+
+group 'extrabiomes'
+version 'V1.0'
+
+base {
+    archivesName = 'ExtraBiomesXL'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+    sourceCompatibility = JavaVersion.VERSION_1_6
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 6
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+def relocatedClasses = [
+        // ModLoader
+        "ModLoader",
+        "BaseMod",
+
+        // ExtraBiomesXL
+        "BiomeGenAlps",
+        "BiomeGenAutumnWoods",
+        "BiomeGenBirchForest",
+        "BiomeGenForestedHills",
+        "BiomeGenForestedIsland",
+        "BiomeGenGlacier",
+        "BiomeGenGreenHills",
+        "BiomeGenGreenSwamp",
+        "BiomeGenIceWasteland",
+        "BiomeGenMarsh",
+        "BiomeGenMeadow",
+        "BiomeGenMiniJungle",
+        "BiomeGenMountainRidge",
+        "BiomeGenRainforest",
+        "BiomeGenRedwoodForest",
+        "BiomeGenRedwoodLush",
+        "BiomeGenSavanna",
+        "BiomeGenShrubland",
+        "BiomeGenSnowForest",
+        "BiomeGenTemperateRainforest",
+        "BiomeGenTundra",
+        "BiomeGenWasteland",
+        "BiomeGenWoodlands",
+        "BlockAutumnSapling",
+        "BlockAutumnShrub",
+        "BlockBrownGrass",
+        "BlockCatTail",
+        "BlockCoverGrass",
+        "BlockCrackedSand",
+        "BlockDeadGrass",
+        "BlockFirSapling",
+        "BlockHydrangea",
+        "BlockLeafPile",
+        "BlockLeavesBrown",
+        "BlockLeavesOrange",
+        "BlockLeavesRed",
+        "BlockLeavesYellow",
+        "BlockOrangeFlower",
+        "BlockPurpleFlower",
+        "BlockQuicksand",
+        "BlockRedRock",
+        "BlockRoot",
+        "BlockShortGrass",
+        "BlockThickGrass",
+        "BlockTinyCactus",
+        "BlockToadstool",
+        "BlockWheatGrass",
+        "BlockWhiteFlower",
+        "ItemAutumnSapling",
+        "ItemAutumnShrub",
+        "ItemCatTail",
+        "ItemFertilizer",
+        "ItemFirSapling",
+        "ItemHydrangea",
+        "ItemOrangeFlower",
+        "ItemPurpleFlower",
+        "ItemRoot",
+        "ItemTinyCactus",
+        "ItemToadstool",
+        "ItemWhiteFlower",
+        "MLProp",
+        "mod_ExtraBiomesXL",
+        "WorldGenAlps",
+        "WorldGenBluff",
+        "WorldGenBrownGrass",
+        "WorldGenCatTail",
+        "WorldGenDeadGrass",
+        "WorldGenDirtBed",
+        "WorldGenFirTree",
+        "WorldGenLeafPile",
+        "WorldGenMarsh",
+        "WorldGenOasis",
+        "WorldGenPit",
+        "WorldGenPit2",
+        "WorldGenRedwood",
+        "WorldGenRoot",
+        "WorldGenSavanna",
+        "WorldGenSwamp2",
+        "WorldGenTinyCactus",
+        "WorldGenTreesBrown",
+        "WorldGenTreesOrange",
+        "WorldGenTreesRed",
+        "WorldGenTreesYellow"
+]
+
+unimined.minecraft {
+    version project.minecraft_version
+    side("client")
+
+    mappings {
+        mcp("legacy", "${project.mcp_version}-${project.minecraft_version}")
+
+        stubs(["official", "searge"]) {
+            for (String clazzName : relocatedClasses) {
+                c(clazzName, "net/minecraft/src/${clazzName}")
+            }
+        }
+
+        devNamespace "mcp"
+    }
+
+    jarMod {
+    }
+
+    minecraftRemapper.config {
+        ignoreConflicts(true)
+    }
+
+    runs {
+        config("client") {
+            jvmArgs("-Djma.debug=true")
+        }
+    }
+}
+
+unimined.wagYourMaven("releases")
+
+dependencies {
+    jarMod "risugami:modloader:${project.minecraft_version}"
+}
+
+
+processResources {
+}
+
+jar {
+    from("Credits.txt")
+    from("README-Installation.txt")
+}
