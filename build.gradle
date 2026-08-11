@@ -1,0 +1,232 @@
+plugins {
+    id 'java'
+    id 'xyz.wagyourtail.unimined' version '1.4.2-SNAPSHOT'
+}
+
+group 'extrabiomes'
+version project.mod_version
+
+base {
+    archivesName = 'ExtraBiomesXL'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+    sourceCompatibility = JavaVersion.VERSION_1_6
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 6
+}
+
+repositories {
+    unimined.minecraftForgeMaven()
+    mavenCentral()
+    mavenLocal()
+}
+
+def relocatedClasses = [
+        // ModLoader
+        "ModLoader",
+        "BaseMod",
+        "EntityRendererProxy",
+        "ModTextureAnimation",
+        "ModTextureStatic",
+        // ModLoaderMP
+        "BaseModMp",
+        "ISpawnable",
+        "mod_ModLoaderMp",
+        "ModLoaderMp",
+        "NetClientHandlerEntity",
+        "Packet230ModLoader",
+        // Forge
+        "mod_MinecraftForge",
+
+        // ExtraBiomesXL
+        "BiomeGenAlps",
+        "BiomeGenAutumnWoods",
+        "BiomeGenBirchForest",
+        "BiomeGenForestedHills",
+        "BiomeGenForestedIsland",
+        "BiomeGenGlacier",
+        "BiomeGenGreenHills",
+        "BiomeGenGreenSwamp",
+        "BiomeGenIceWasteland",
+        "BiomeGenMarsh",
+        "BiomeGenMeadow",
+        "BiomeGenMiniJungle",
+        "BiomeGenMountainRidge",
+        "BiomeGenRainforest",
+        "BiomeGenRedwoodForest",
+        "BiomeGenRedwoodLush",
+        "BiomeGenSavanna",
+        "BiomeGenShrubland",
+        "BiomeGenSnowForest",
+        "BiomeGenTemperateRainforest",
+        "BiomeGenTundra",
+        "BiomeGenWasteland",
+        "BiomeGenWoodlands",
+        "BlockAutumnSapling",
+        "BlockAutumnShrub",
+        "BlockBrownGrass",
+        "BlockCatTail",
+        "BlockCoverGrass",
+        "BlockCrackedSand",
+        "BlockDeadGrass",
+        "BlockFirSapling",
+        "BlockHydrangea",
+        "BlockLeafPile",
+        "BlockLeavesBrown",
+        "BlockLeavesOrange",
+        "BlockLeavesRed",
+        "BlockLeavesYellow",
+        "BlockOrangeFlower",
+        "BlockPurpleFlower",
+        "BlockQuicksand",
+        "BlockRedRock",
+        "BlockRedwoodSapling",
+        "BlockRoot",
+        "BlockShortGrass",
+        "BlockThickGrass",
+        "BlockTinyCactus",
+        "BlockToadstool",
+        "BlockWheatGrass",
+        "BlockWhiteFlower",
+        "ItemCatTail",
+        "ItemFertilizer",
+        "mod_ExtraBiomesXL",
+        "WorldGenAlps",
+        "WorldGenBrownGrass",
+        "WorldGenCatTail",
+        "WorldGenDeadGrass",
+        "WorldGenDirtBed",
+        "WorldGenFirTree",
+        "WorldGenFirTree2",
+        "WorldGenLeafPile",
+        "WorldGenMarsh",
+        "WorldGenOasis",
+        "WorldGenPit",
+        "WorldGenPit2",
+        "WorldGenRedwood",
+        "WorldGenRoot",
+        "WorldGenSavanna",
+        "WorldGenSwamp2",
+        "WorldGenTinyCactus",
+        "WorldGenTreesBrown",
+        "WorldGenTreesOrange",
+        "WorldGenTreesRed",
+        "WorldGenTreesYellow"
+]
+
+def forgeClasses = [
+        "ArmorProperties",
+        "Configuration",
+        "DimensionManager",
+        "DungeonLoot",
+        "EntityTrackerInfo",
+        "EnumHelper",
+        "EnumHelperClient",
+        "ForgeHooks",
+        "ForgeHooksClient",
+        "GuiControlsScrollPanel",
+        "GuiMissingMods",
+        "IArmorTextureProvider",
+        "IArrowLooseHandler",
+        "IArrowNockHandler",
+        "IBonemealHandler",
+        "IBucketHandler",
+        "IChatHandler",
+        "IChunkLoadHandler",
+        "IConnectionHandler",
+        "IConnectRedstone",
+        "ICraftingHandler",
+        "IDestroyToolHandler",
+        "IEntityInteractHandler",
+        "IGuiHandler",
+        "IHighlightHandler",
+        "IHoeHandler",
+        "IItemRenderer",
+        "IMinecartCollisionHandler",
+        "IMinecartHandler",
+        "IMultipassRender",
+        "IOreHandler",
+        "IOverrideReplace",
+        "IPacketHandler",
+        "IPickupHandler",
+        "IRenderContextHandler",
+        "IRenderWorldLastHandler",
+        "IShearable",
+        "ISidedInventory",
+        "ISleepHandler",
+        "ISpawnHandler",
+        "ISpecialArmor",
+        "ISpecialResistance",
+        "ItemRenderType",
+        "ITextureProvider",
+        "IThrowableEntity",
+        "MessageManager",
+        "MinecartKey",
+        "MinecraftForge",
+        "MinecraftForgeClient",
+        "NetworkMod",
+        "ObjectPair",
+        "PacketHandlerClient",
+        "Property",
+        "packets/ForgePacket",
+        "packets/PacketEntitySpawn",
+        "packets/PacketMissingMods",
+        "packets/PacketModList",
+        "packets/PacketOpenGUI"
+]
+
+unimined.minecraft {
+    version project.minecraft_version
+    side("client")
+
+    mappings {
+        mcp("legacy", "${project.mcp_version}-${project.minecraft_version}")
+
+        stubs(["official", "searge"]) {
+            for (String clazzName : relocatedClasses) {
+                c(clazzName, "net/minecraft/src/${clazzName}")
+            }
+            for (String clazzName : forgeClasses) {
+                c("forge/${clazzName}", "net/minecraft/src/forge/${clazzName}")
+            }
+        }
+
+        devNamespace "mcp"
+    }
+
+    jarMod {
+    }
+
+    minecraftRemapper.config {
+        ignoreConflicts(true)
+    }
+
+    runs {
+        config("client") {
+            jvmArgs("-Djma.debug=true")
+        }
+    }
+}
+
+unimined.wagYourMaven("releases")
+
+dependencies {
+    jarMod "risugami:modloader:${project.minecraft_version}"
+    jarMod "modloadermp:modloadermp:${project.minecraft_version}:client"
+    jarMod "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}:client@zip"
+}
+
+
+processResources {
+}
+
+jar {
+    from("Credits.txt")
+    from("README-Installation.txt")
+}
