@@ -1,0 +1,84 @@
+plugins {
+    id 'java'
+    id 'xyz.wagyourtail.unimined' version '1.4.2-SNAPSHOT'
+}
+
+group 'extrabiomes'
+version project.mod_version
+
+base {
+    archivesName = 'ExtraBiomesXL'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+    sourceCompatibility = JavaVersion.VERSION_1_6
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 6
+}
+
+repositories {
+    unimined.minecraftForgeMaven()
+    unimined.wagYourMaven("releases")
+    mavenCentral()
+    mavenLocal()
+}
+
+def relocatedClasses = [
+        // ModLoader
+        "ModLoader",
+        "BaseMod",
+        "EntityRendererProxy",
+        "FMLRenderAccessLibrary",
+        "MLProp",
+        "ModTextureAnimation",
+        "ModTextureStatic",
+        "TradeEntry"
+]
+
+unimined.minecraft {
+    version project.minecraft_version
+
+    mappings {
+        stubs(["official", "searge"]) {
+            for (String clazzName : relocatedClasses) {
+                c(clazzName, "net/minecraft/src/${clazzName}")
+            }
+        }
+    }
+
+    minecraftForge {
+        loader project.forge_version
+    }
+
+    minecraftRemapper.config {
+        ignoreConflicts(true)
+    }
+
+    runs {
+        config("client") {
+            jvmArgs("-Djma.debug=true")
+        }
+    }
+}
+
+dependencies {
+
+}
+
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("mcmod.info") {
+        expand "version": project.version
+    }
+}
+
+jar {
+    from("Credits.txt")
+}
