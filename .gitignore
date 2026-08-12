@@ -1,8 +1,7 @@
-#Macintosh file system junk
-.DS_Store
-
-#Windows thumbnail cache trash
-Thumbs.db
+/.gradle/
+/.idea/
+/build/
+/run/
 *.jar
 desktop.ini
 /build.properties

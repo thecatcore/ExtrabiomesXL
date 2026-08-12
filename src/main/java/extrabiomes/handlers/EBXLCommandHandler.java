@@ -22,6 +22,7 @@ import extrabiomes.module.summa.worldgen.WorldGenRedwood;
 import extrabiomes.module.summa.worldgen.WorldGenAutumnTree.AutumnTreeType;
 import extrabiomes.module.summa.worldgen.WorldGenSakuraBlossomTree;
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,6 +30,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.oredict.OreDictionary;
+import org.jetbrains.annotations.NotNull;
 
 public class EBXLCommandHandler extends CommandBase {
 
@@ -382,5 +384,10 @@ public class EBXLCommandHandler extends CommandBase {
 		player.addChatMessage("/ebxl saplingdespawntime [ticks]");
 		player.addChatMessage("/ebxl spawntree <treetype> <x> <y> <z> [seed]");
 		player.addChatMessage("/ebxl version");
+	}
+
+	@Override
+	public int compareTo(@NotNull Object o) {
+		return super.compareTo((ICommand) o);
 	}
 }

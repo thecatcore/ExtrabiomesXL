@@ -1,0 +1,130 @@
+plugins {
+    id 'java'
+    id 'xyz.wagyourtail.unimined' version '1.4.2-SNAPSHOT'
+}
+
+def modProps = new Properties()
+modProps.load(file("mod.properties").newInputStream())
+
+modProps.forEach { pName, pValue ->
+    project.ext.setProperty(pName as String, pValue)
+}
+
+group 'extrabiomes'
+version project.property("mod.version")
+
+base {
+    archivesName = "${project.property("mod.id")}-universal-${project.property("version.minecraft")}"
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+    sourceCompatibility = JavaVersion.VERSION_1_6
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 6
+}
+
+repositories {
+    unimined.minecraftForgeMaven()
+    unimined.wagYourMaven("releases")
+    mavenCentral()
+    mavenLocal()
+}
+
+def relocatedClasses = [
+        // ModLoader
+        "ModLoader",
+        "BaseMod",
+        "EntityRendererProxy",
+        "FMLRenderAccessLibrary",
+        "MLProp",
+        "ModTextureAnimation",
+        "ModTextureStatic",
+        "TradeEntry"
+]
+
+unimined.minecraft {
+    version project.property("version.minecraft")
+
+    mappings {
+        stubs(["official", "searge"]) {
+            for (String clazzName : relocatedClasses) {
+                c(clazzName, "net/minecraft/src/${clazzName}")
+            }
+        }
+    }
+
+    minecraftForge {
+        loader project.forge_version
+    }
+
+    minecraftRemapper.config {
+        ignoreConflicts(true)
+    }
+
+    runs {
+        config("client") {
+            jvmArgs("-Djma.debug=true")
+        }
+    }
+}
+
+tasks.named("remapJar") {
+    prodNamespace("searge")
+}
+
+dependencies {
+
+}
+
+import org.apache.tools.ant.filters.ReplaceTokens
+
+processResources {
+    inputs.property "mod.authors", project.property("mod.authors")
+    inputs.property "mod.credits", project.property("mod.credits")
+    inputs.property "mod.dependants", project.property("mod.dependants")
+    inputs.property "mod.Forge.dependencies", project.property("mod.Forge.dependencies")
+    inputs.property "mod.description", project.property("mod.description")
+    inputs.property "mod.logoFile", project.property("mod.logoFile")
+    inputs.property "version.minecraft", project.property("version.minecraft")
+    inputs.property "mod.id", project.property("mod.id")
+    inputs.property "mod.name", project.property("mod.name")
+    inputs.property "mod.parent", project.property("mod.parent")
+    inputs.property "mod.Forge.requiredMods", project.property("mod.Forge.requiredMods")
+    inputs.property "mod.screenshots", project.property("mod.screenshots")
+    inputs.property "mod.Forge.updateUrl", project.property("mod.Forge.updateUrl")
+    inputs.property "mod.url", project.property("mod.url")
+    inputs.property "mod.useDependencyInformation", project.property("mod.useDependencyInformation")
+    inputs.property "mod.version", project.property("mod.version")
+
+    filesMatching("mcmod.template") {
+        filter(ReplaceTokens, tokens: [
+                AUTHORS: project.property("mod.authors"),
+                CREDITS: project.property("mod.credits"),
+                DEPENDANTS: project.property("mod.dependants"),
+                DEPENDENCIES: project.property("mod.Forge.dependencies"),
+                DESCRIPTION: project.property("mod.description"),
+                LOGOFILE: project.property("mod.logoFile"),
+                MCVERSION: project.property("version.minecraft"),
+                MODID: project.property("mod.id"),
+                MODNAME: project.property("mod.name"),
+                PARENT: project.property("mod.parent"),
+                REQUIREDMODS: project.property("mod.Forge.requiredMods"),
+                SCREENSHOTS: project.property("mod.screenshots"),
+                UPDATEURL: project.property("mod.Forge.updateUrl"),
+                URL: project.property("mod.url"),
+                USEDEPENDANCYINFORMATION: project.property("mod.useDependencyInformation"),
+                VERSION: project.property("mod.version")
+        ])
+    }
+
+    rename("mcmod.template", "mcmod.info")
+}
+
+jar {
+    from("Credits.txt")
+}
