@@ -15,10 +15,10 @@ import net.minecraft.src.WorldGenerator;
 
 class WorldGenCatTail extends WorldGenerator {
 
-	private final int	blockID;
+	private final Block block;
 
-	WorldGenCatTail(int blockID) {
-		this.blockID = blockID;
+	WorldGenCatTail(Block block) {
+		this.block = block;
 	}
 
 	@Override
@@ -45,9 +45,8 @@ class WorldGenCatTail extends WorldGenerator {
 			final int i1 = 1 + rand.nextInt(rand.nextInt(1) + 1);
 
 			for (i = 0; i < i1; i++)
-				if (Block.blocksList[blockID].canBlockStay(world, x1,
-						y + i, z1))
-					world.setBlock(x1, y + i, z1, blockID);
+				if (block.canBlockStay(world, x1, y + i, z1))
+					world.setBlock(x1, y + i, z1, block.blockID);
 		}
 
 		return true;

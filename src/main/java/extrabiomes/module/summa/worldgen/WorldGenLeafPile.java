@@ -14,10 +14,10 @@ import net.minecraft.src.WorldGenerator;
 
 class WorldGenLeafPile extends WorldGenerator {
 
-	private final int	blockID;
+	private final Block block;
 
-	WorldGenLeafPile(int blockID) {
-		this.blockID = blockID;
+	WorldGenLeafPile(Block block) {
+		this.block = block;
 	}
 
 	@Override
@@ -35,9 +35,8 @@ class WorldGenLeafPile extends WorldGenerator {
 			final int z1 = z + rand.nextInt(8) - rand.nextInt(8);
 
 			if (world.isAirBlock(x1, y1, z1)
-					&& Block.blocksList[blockID].canBlockStay(world,
-							x1, y1, z1))
-				world.setBlock(x1, y1, z1, blockID);
+					&& block.canBlockStay(world, x1, y1, z1))
+				world.setBlock(x1, y1, z1, block.blockID);
 		}
 
 		return true;

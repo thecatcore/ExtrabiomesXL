@@ -48,8 +48,7 @@ public enum BlockManager {
 
 			proxy.registerOre("sandQuick", thisBlock);
 
-			proxy.registerWorldGenerator(new QuicksandGenerator(
-					thisBlock.blockID));
+			proxy.registerWorldGenerator(new QuicksandGenerator(thisBlock));
 		}
 	};
 

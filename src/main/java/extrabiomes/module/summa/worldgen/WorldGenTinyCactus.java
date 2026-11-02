@@ -15,11 +15,11 @@ import extrabiomes.api.BiomeManager;
 
 class WorldGenTinyCactus extends WorldGenerator {
 
-	private final int	blockID;
+	private final Block block;
 	private final int	metadata;
 
-	WorldGenTinyCactus(int blockID, int metadata) {
-		this.blockID = blockID;
+	WorldGenTinyCactus(Block block, int metadata) {
+		this.block = block;
 		this.metadata = metadata;
 	}
 
@@ -41,7 +41,7 @@ class WorldGenTinyCactus extends WorldGenerator {
 				if (id == Block.sand.blockID
 						|| (byte) id == BiomeManager.mountainridge
 								.get().topBlock)
-					world.setBlockAndMetadata(x1, y1 + y2, z1, blockID,
+					world.setBlockAndMetadata(x1, y1 + y2, z1, block.blockID,
 							metadata);
 			}
 		}

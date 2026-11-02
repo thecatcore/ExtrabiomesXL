@@ -13,11 +13,11 @@ import net.minecraft.src.World;
 import net.minecraft.src.WorldGenerator;
 
 public class WorldGenWastelandGrass extends WorldGenerator {
-	private final int	grassID;
+	private final Block grassBlock;
 	private final int	grassMeta;
 
-	public WorldGenWastelandGrass(int grassID, int grassMeta) {
-		this.grassID = grassID;
+	public WorldGenWastelandGrass(Block grassBlock, int grassMeta) {
+		this.grassBlock = grassBlock;
 		this.grassMeta = grassMeta;
 	}
 
@@ -40,9 +40,9 @@ public class WorldGenWastelandGrass extends WorldGenerator {
 			y1++;
 
 			if (world.isAirBlock(x1, y1, z1)
-					&& Block.blocksList[grassID].canBlockStay(world,
+					&& grassBlock.canBlockStay(world,
 							x1, y1, z1))
-				world.setBlockAndMetadata(x1, y1, z1, grassID,
+				world.setBlockAndMetadata(x1, y1, z1, grassBlock.blockID,
 						grassMeta);
 		}
 

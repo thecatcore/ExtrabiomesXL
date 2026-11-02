@@ -8,10 +8,7 @@ package extrabiomes.module.summa.worldgen;
 
 import java.util.Random;
 
-import net.minecraft.src.BiomeGenBase;
-import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.World;
-import net.minecraft.src.WorldGenerator;
+import net.minecraft.src.*;
 import cpw.mods.fml.common.IWorldGenerator;
 import extrabiomes.api.BiomeManager;
 import extrabiomes.module.summa.block.BlockCustomFlower;
@@ -27,22 +24,22 @@ public class FlowerGenerator implements IWorldGenerator {
 	private final WorldGenerator	toadStoolGen;
 	private final WorldGenerator	whiteGen;
 
-	public FlowerGenerator(int flowerID) {
-		autumnShrubGen = new WorldGenMetadataFlowers(flowerID,
+	public FlowerGenerator(Block flowerBlock) {
+		autumnShrubGen = new WorldGenMetadataFlowers(flowerBlock,
 				BlockCustomFlower.BlockType.AUTUMN_SHRUB.metadata());
-		hydrangeaGen = new WorldGenMetadataFlowers(flowerID,
+		hydrangeaGen = new WorldGenMetadataFlowers(flowerBlock,
 				BlockCustomFlower.BlockType.HYDRANGEA.metadata());
-		orangeGen = new WorldGenMetadataFlowers(flowerID,
+		orangeGen = new WorldGenMetadataFlowers(flowerBlock,
 				BlockCustomFlower.BlockType.ORANGE.metadata());
-		purpleGen = new WorldGenMetadataFlowers(flowerID,
+		purpleGen = new WorldGenMetadataFlowers(flowerBlock,
 				BlockCustomFlower.BlockType.PURPLE.metadata());
-		rootGen = new WorldGenRoot(flowerID,
+		rootGen = new WorldGenRoot(flowerBlock,
 				BlockCustomFlower.BlockType.ROOT.metadata());
-		tinyCactusGen = new WorldGenTinyCactus(flowerID,
+		tinyCactusGen = new WorldGenTinyCactus(flowerBlock,
 				BlockCustomFlower.BlockType.TINY_CACTUS.metadata());
-		toadStoolGen = new WorldGenMetadataFlowers(flowerID,
+		toadStoolGen = new WorldGenMetadataFlowers(flowerBlock,
 				BlockCustomFlower.BlockType.TOADSTOOL.metadata());
-		whiteGen = new WorldGenMetadataFlowers(flowerID,
+		whiteGen = new WorldGenMetadataFlowers(flowerBlock,
 				BlockCustomFlower.BlockType.WHITE.metadata());
 	}
 

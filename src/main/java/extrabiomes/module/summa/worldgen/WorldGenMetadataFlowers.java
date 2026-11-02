@@ -13,11 +13,11 @@ import net.minecraft.src.World;
 import net.minecraft.src.WorldGenerator;
 
 class WorldGenMetadataFlowers extends WorldGenerator {
-	private final int	blockId;
+	private final Block block;
 	private final int	metadata;
 
-	WorldGenMetadataFlowers(int blockId, int metadata) {
-		this.blockId = blockId;
+	WorldGenMetadataFlowers(Block block, int metadata) {
+		this.block = block;
 		this.metadata = metadata;
 	}
 
@@ -31,9 +31,8 @@ class WorldGenMetadataFlowers extends WorldGenerator {
 			final int z1 = z + rand.nextInt(8) - rand.nextInt(8);
 
 			if (world.isAirBlock(x1, y1, z1)
-					&& Block.blocksList[blockId].canBlockStay(world,
-							x1, y1, z1))
-				world.setBlockAndMetadata(x1, y1, z1, blockId, metadata);
+					&& block.canBlockStay(world, x1, y1, z1))
+				world.setBlockAndMetadata(x1, y1, z1, block.blockID, metadata);
 		}
 
 		return true;

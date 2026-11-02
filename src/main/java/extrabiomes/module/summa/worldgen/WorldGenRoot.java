@@ -14,11 +14,11 @@ import net.minecraft.src.WorldGenerator;
 
 class WorldGenRoot extends WorldGenerator {
 
-	private final int	blockID;
+	private final Block block;
 	private final int	metadata;
 
-	WorldGenRoot(int blockID, int metadata) {
-		this.blockID = blockID;
+	WorldGenRoot(Block block, int metadata) {
+		this.block = block;
 		this.metadata = metadata;
 	}
 
@@ -36,9 +36,9 @@ class WorldGenRoot extends WorldGenerator {
 			final int i1 = 1 + rand.nextInt(rand.nextInt(3) + 1);
 
 			for (int y2 = 0; y2 < i1; y2++)
-				if (Block.blocksList[blockID].canBlockStay(world, x1,
+				if (block.canBlockStay(world, x1,
 						y1 + y2, z1))
-					world.setBlockAndMetadata(x1, y1 + y2, z1, blockID,
+					world.setBlockAndMetadata(x1, y1 + y2, z1, block.blockID,
 							metadata);
 		}
 

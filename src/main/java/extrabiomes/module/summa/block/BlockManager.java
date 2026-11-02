@@ -92,8 +92,7 @@ public enum BlockManager {
 
 			proxy.registerOre("reedCatTail", thisBlock);
 
-			proxy.registerWorldGenerator(new CatTailGenerator(
-					thisBlock.blockID));
+			proxy.registerWorldGenerator(new CatTailGenerator(thisBlock));
 		}
 	},
 	CRACKEDSAND(true) {
@@ -141,8 +140,7 @@ public enum BlockManager {
 				proxy.registerOre("flower" + type.toString(), itemstack);
 			}
 
-			proxy.registerWorldGenerator(new FlowerGenerator(
-					thisBlock.blockID));
+			proxy.registerWorldGenerator(new FlowerGenerator(thisBlock));
 		}
 	},
 	GRASS {
@@ -188,21 +186,21 @@ public enum BlockManager {
 			if (BiomeManager.wasteland.isPresent()) {
 				BiomeManager.addWeightedGrassGenForBiome(
 						BiomeManager.wasteland.get(),
-						new WorldGenWastelandGrass(thisBlock.blockID,
+						new WorldGenWastelandGrass(thisBlock,
 								BlockCustomTallGrass.BlockType.DEAD
 										.metadata()), 90);
 				BiomeManager
 						.addWeightedGrassGenForBiome(
 								BiomeManager.wasteland.get(),
 								new WorldGenWastelandGrass(
-										thisBlock.blockID,
+										thisBlock,
 										BlockCustomTallGrass.BlockType.DEAD_YELLOW
 												.metadata()), 90);
 				BiomeManager
 						.addWeightedGrassGenForBiome(
 								BiomeManager.wasteland.get(),
 								new WorldGenWastelandGrass(
-										thisBlock.blockID,
+										thisBlock,
 										BlockCustomTallGrass.BlockType.DEAD_TALL
 												.metadata()), 35);
 			}
@@ -263,8 +261,7 @@ public enum BlockManager {
 			proxy.addName(thisBlock, "Leaf Pile");
 
 			proxy.registerOre("pileLeaf", thisBlock);
-			proxy.registerWorldGenerator(new LeafPileGenerator(
-					thisBlock.blockID));
+			proxy.registerWorldGenerator(new LeafPileGenerator(thisBlock));
 		}
 	},
 	REDROCK(true) {

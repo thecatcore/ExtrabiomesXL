@@ -8,10 +8,7 @@ package extrabiomes.module.summa.worldgen;
 
 import java.util.Random;
 
-import net.minecraft.src.BiomeGenBase;
-import net.minecraft.src.IChunkProvider;
-import net.minecraft.src.World;
-import net.minecraft.src.WorldGenerator;
+import net.minecraft.src.*;
 import cpw.mods.fml.common.IWorldGenerator;
 import extrabiomes.api.BiomeManager;
 
@@ -19,8 +16,8 @@ public class LeafPileGenerator implements IWorldGenerator {
 
 	private final WorldGenerator	leafPileGen;
 
-	public LeafPileGenerator(int blockID) {
-		leafPileGen = new WorldGenLeafPile(blockID);
+	public LeafPileGenerator(Block block) {
+		leafPileGen = new WorldGenLeafPile(block);
 	}
 
 	@Override

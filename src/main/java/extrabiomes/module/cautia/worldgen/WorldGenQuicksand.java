@@ -14,10 +14,10 @@ import net.minecraft.src.WorldGenerator;
 
 class WorldGenQuicksand extends WorldGenerator {
 
-	private final int	quicksandID;
+	private final Block block;
 
-	WorldGenQuicksand(int quicksandID) {
-		this.quicksandID = quicksandID;
+	WorldGenQuicksand(Block block) {
+		this.block = block;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ class WorldGenQuicksand extends WorldGenerator {
 		for (int x1 = -1; x1 <= 1; x1++)
 			for (int z1 = -1; z1 <= 1; z1++)
 				for (int y1 = -2; y1 <= 0; y1++)
-					world.setBlock(x + x1, y + y1, z + z1, quicksandID);
+					world.setBlock(x + x1, y + y1, z + z1, block.blockID);
 
 		return true;
 	}

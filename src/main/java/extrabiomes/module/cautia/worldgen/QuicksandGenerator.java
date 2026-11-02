@@ -9,6 +9,7 @@ package extrabiomes.module.cautia.worldgen;
 import java.util.Random;
 
 import net.minecraft.src.BiomeGenBase;
+import net.minecraft.src.Block;
 import net.minecraft.src.IChunkProvider;
 import net.minecraft.src.World;
 import cpw.mods.fml.common.IWorldGenerator;
@@ -18,8 +19,8 @@ public class QuicksandGenerator implements IWorldGenerator {
 
 	private final WorldGenQuicksand	genPit;
 
-	public QuicksandGenerator(int quicksandID) {
-		genPit = new WorldGenQuicksand(quicksandID);
+	public QuicksandGenerator(Block quicksand) {
+		genPit = new WorldGenQuicksand(quicksand);
 	}
 
 	@Override
